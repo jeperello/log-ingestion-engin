@@ -1,6 +1,6 @@
 package com.virtualthread.log_ingestion_engine.core.controller;
 
-import com.virtualthread.log_ingestion_engine.core.LogBuffer;
+import com.virtualthread.log_ingestion_engine.core.repository.LogBuffer;
 import com.virtualthread.log_ingestion_engine.core.dto.request.IngestionRequest;
 import com.virtualthread.log_ingestion_engine.core.factory.LogProducerFactory;
 import com.virtualthread.log_ingestion_engine.core.service.LogProducerI;

@@ -6,8 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class LogIngestionEngineApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(LogIngestionEngineApplication.class, args);
-	}
-
+    public static void main(String[] args) {
+        SpringApplication.run(LogIngestionEngineApplication.class, args);
+    }
 }

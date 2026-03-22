@@ -1,6 +1,6 @@
 package com.virtualthread.log_ingestion_engine.core.service;
 
-import com.virtualthread.log_ingestion_engine.core.LogBuffer;
+import com.virtualthread.log_ingestion_engine.core.repository.LogBuffer;
 import com.virtualthread.log_ingestion_engine.core.dto.LogEntry;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

@@ -1,6 +1,7 @@
 package com.virtualthread.log_ingestion_engine.core;
 
 import com.virtualthread.log_ingestion_engine.core.dto.LogEntry;
+import com.virtualthread.log_ingestion_engine.core.repository.LogBuffer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

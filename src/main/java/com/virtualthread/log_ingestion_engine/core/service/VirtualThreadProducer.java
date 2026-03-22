@@ -1,13 +1,15 @@
 package com.virtualthread.log_ingestion_engine.core.service;
-import com.virtualthread.log_ingestion_engine.core.LogBuffer;
+import com.virtualthread.log_ingestion_engine.core.repository.LogBuffer;
 import com.virtualthread.log_ingestion_engine.core.dto.LogEntry;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.UUID;
 import java.util.concurrent.Executors;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class VirtualThreadProducer implements LogProducerI {
 
