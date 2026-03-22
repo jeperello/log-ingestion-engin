@@ -1,4 +1,4 @@
-package com.virtualthread.log_ingestion_engine.core.model;
+package com.virtualthread.log_ingestion_engine.core.dto;
 import java.time.LocalDateTime;
 
 /**

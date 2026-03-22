@@ -1,6 +1,6 @@
 package com.virtualthread.log_ingestion_engine.core;
 
-import com.virtualthread.log_ingestion_engine.core.model.LogEntry;
+import com.virtualthread.log_ingestion_engine.core.dto.LogEntry;
 import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;

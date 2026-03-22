@@ -1,6 +1,6 @@
 package com.virtualthread.log_ingestion_engine.core.service;
 import com.virtualthread.log_ingestion_engine.core.LogBuffer;
-import com.virtualthread.log_ingestion_engine.core.model.LogEntry;
+import com.virtualthread.log_ingestion_engine.core.dto.LogEntry;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
