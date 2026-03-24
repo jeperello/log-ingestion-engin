@@ -10,7 +10,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class LogProducerFactory {
 
-    // Spring inyecta automáticamente TODAS las implementaciones de LogProducer en esta lista
     private final List<LogProducerI> producers;
 
     public LogProducerI getProducer(String type) {

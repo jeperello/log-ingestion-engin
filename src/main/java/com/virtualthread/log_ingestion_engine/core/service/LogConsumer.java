@@ -51,12 +51,20 @@ public class LogConsumer implements DisposableBean {
 
     private void processLogs(List<LogEntry> logs) throws InterruptedException {
         // Simulamos la latencia de guardar en una base de datos (I/O Bound)
-        // Esto es lo que realmente probará la potencia de los Virtual Threads
-        long delay = 150;
+        long delay = 250;
         Thread.sleep(delay);
 
         log.info("💾 [BATCH] Guardados {} logs en la DB simulada (Latencia: {}ms). Pendientes en cola: {}",
                 logs.size(), delay, logBuffer.getPendingCount());
+        // Contamos cuántos hay de cada uno en este lote de 100
+        long virtualCount = logs.stream()
+                .filter(l -> l.message().contains("Virtual"))
+                .count();
+        long platformCount = logs.stream()
+                .filter(l -> l.message().contains("Plataform"))
+                .count();
+        log.info("💾 [BATCH] Procesados {} logs. (Virtual: {} | Platform: {}). Pendientes: {}",
+                logs.size(), virtualCount, platformCount, logBuffer.getPendingCount());
     }
 
     @Override
