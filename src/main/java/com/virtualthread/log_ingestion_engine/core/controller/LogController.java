@@ -20,13 +20,20 @@ public class LogController {
     private final LogBuffer buffer;
 
     @PostMapping("/ingest")
-    public ResponseEntity<String> ingest(@RequestBody IngestionRequest request) {
+    public ResponseEntity<Map<String,String>> ingest(@RequestBody IngestionRequest request) {
         LogProducerI producer = factory.getProducer(request.engineType());
 
-        // Ejecutamos la producción (esto lanza los hilos)
-        producer.produce(request.count());
+        // Lanzamos un Hilo Virtual "Orquestador" que se encarga de disparar la producción.
+        // Esto libera al hilo de la petición HTTP INSTANTÁNEAMENTE.
+        Thread.ofVirtual().start(() -> {
+            producer.produce(request.count());
+        });
 
-        return ResponseEntity.ok("Iniciada ingesta con: " + producer.getEngineName());
+        return ResponseEntity.ok(Map.of(
+                "message", "Ingesta iniciada con éxito",
+                "engine", producer.getEngineName(),
+                "status", "ASYNCHRONOUS_PROCESSING"
+        ));
     }
 
     @GetMapping("/stats")
