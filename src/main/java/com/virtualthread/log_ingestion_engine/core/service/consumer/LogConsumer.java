@@ -1,4 +1,4 @@
-package com.virtualthread.log_ingestion_engine.core.service;
+package com.virtualthread.log_ingestion_engine.core.service.consumer;
 
 import com.virtualthread.log_ingestion_engine.core.dto.LogEntry;
 import com.virtualthread.log_ingestion_engine.core.repository.LogBuffer;
@@ -14,11 +14,11 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class LogConsumer implements DisposableBean {
-
     private final LogBuffer logBuffer;
     private static final int BATCH_SIZE = 100;
     private volatile boolean running = true; // Flag para control de apagado
-
+    private long startTime = 0;
+    private int totalProcessedInSession = 0;
     /**
      * PostConstruct asegura que el consumidor arranque apenas Spring
      * termine de inicializar el bean.
@@ -50,10 +50,15 @@ public class LogConsumer implements DisposableBean {
     }
 
     private void processLogs(List<LogEntry> logs) throws InterruptedException {
-        // Simulamos la latencia de guardar en una base de datos (I/O Bound)
+        if (startTime == 0) {
+            startTime = System.currentTimeMillis();
+            totalProcessedInSession = 0;
+        }
+        // Simulo la latencia de una base de datos o sistema externo.
         long delay = 250;
         Thread.sleep(delay);
 
+        totalProcessedInSession += logs.size();
         log.info("💾 [BATCH] Guardados {} logs en la DB simulada (Latencia: {}ms). Pendientes en cola: {}",
                 logs.size(), delay, logBuffer.getPendingCount());
         // Contamos cuántos hay de cada uno en este lote de 100
@@ -65,6 +70,17 @@ public class LogConsumer implements DisposableBean {
                 .count();
         log.info("💾 [BATCH] Procesados {} logs. (Virtual: {} | Platform: {}). Pendientes: {}",
                 logs.size(), virtualCount, platformCount, logBuffer.getPendingCount());
+        // Si después de procesar este lote la cola quedó en 0, terminó la ráfaga
+        if (logBuffer.getPendingCount() == 0) {
+            long endTime = System.currentTimeMillis();
+            long duration = endTime - startTime;
+
+            log.info("🏁 [LATENCY REPORT] Ingesta Completa de {} logs finalizada en {} ms.",
+                    totalProcessedInSession, duration);
+
+            // Reseteamos para la próxima ráfaga
+            startTime = 0;
+        }
     }
 
     @Override

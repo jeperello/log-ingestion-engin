@@ -1,4 +1,4 @@
-package com.virtualthread.log_ingestion_engine.core.service;
+package com.virtualthread.log_ingestion_engine.core.service.producer;
 
 import com.virtualthread.log_ingestion_engine.core.repository.LogBuffer;
 import com.virtualthread.log_ingestion_engine.core.dto.LogEntry;
@@ -23,6 +23,7 @@ public class PlatformThreadProducer implements LogProducerI {
                 try {
                     LogEntry entry = new LogEntry(UUID.randomUUID().toString(),
                             "Log de Plataforma", "INFO", LocalDateTime.now());
+                    Thread.sleep(100); // Simulamos un pequeño retraso en la producción
                     buffer.enqueue(entry);
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();

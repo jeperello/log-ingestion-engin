@@ -1,12 +1,10 @@
 package com.virtualthread.log_ingestion_engine.core.aspect;
 
-import com.virtualthread.log_ingestion_engine.core.service.LogProducerI;
+import com.virtualthread.log_ingestion_engine.core.service.producer.LogProducerI;
 import lombok.extern.slf4j.Slf4j;
-import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Before;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StopWatch;
 

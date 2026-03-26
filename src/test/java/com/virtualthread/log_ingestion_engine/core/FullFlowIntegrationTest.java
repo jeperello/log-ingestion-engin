@@ -2,7 +2,7 @@ package com.virtualthread.log_ingestion_engine.core;
 
 import com.virtualthread.log_ingestion_engine.core.factory.LogProducerFactory;
 import com.virtualthread.log_ingestion_engine.core.repository.LogBuffer;
-import com.virtualthread.log_ingestion_engine.core.service.LogProducerI;
+import com.virtualthread.log_ingestion_engine.core.service.producer.LogProducerI;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

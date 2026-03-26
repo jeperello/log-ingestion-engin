@@ -1,6 +1,6 @@
 package com.virtualthread.log_ingestion_engine.core.factory;
 
-import com.virtualthread.log_ingestion_engine.core.service.LogProducerI;
+import com.virtualthread.log_ingestion_engine.core.service.producer.LogProducerI;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
