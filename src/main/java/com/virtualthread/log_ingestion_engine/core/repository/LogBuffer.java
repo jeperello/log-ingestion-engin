@@ -15,7 +15,7 @@ public class LogBuffer {
 
     // Capacidad limitada para demostrar Backpressure (Presión hacia atrás)
     // Si la cola se llena, el productor tiene que esperar.
-    private final BlockingQueue<LogEntry> queue = new LinkedBlockingQueue<>(5000);
+    private final BlockingQueue<LogEntry> queue = new LinkedBlockingQueue<>(3000);
 
     // Estado atómico para evitar la repetición del log en múltiples hilos
     private final AtomicBoolean backpressureLogged = new AtomicBoolean(false);
