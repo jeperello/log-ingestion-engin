@@ -3,9 +3,11 @@ package com.virtualthread.log_ingestion_engine.core.controller;
 import com.virtualthread.log_ingestion_engine.core.repository.LogBuffer;
 import com.virtualthread.log_ingestion_engine.core.dto.request.IngestionRequest;
 import com.virtualthread.log_ingestion_engine.core.factory.LogProducerFactory;
+import com.virtualthread.log_ingestion_engine.core.service.IngestionStateService;
 import com.virtualthread.log_ingestion_engine.core.service.producer.LogProducerI;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,12 +18,16 @@ import java.util.Map;
 @RequiredArgsConstructor
 @CrossOrigin // Para que Angular pueda conectar sin problemas de CORS
 public class LogController {
-
+    private final IngestionStateService stateService;
     private final LogProducerFactory factory;
     private final LogBuffer buffer;
 
     @PostMapping("/ingest")
     public ResponseEntity<Map<String,String>> ingest(@Valid @RequestBody IngestionRequest request) {
+        if (!stateService.tryStart()) {
+            return ResponseEntity.status(HttpStatus.CONFLICT)
+                    .body(Map.of("error", "Ya hay una ingesta en curso. Por favor, espere a que termine."));
+        }
         LogProducerI producer = factory.getProducer(request.engineType());
         // Lanzamos un Hilo Virtual "Orquestador" que se encarga de disparar la producción.
         // Esto libera al hilo de la petición HTTP INSTANTÁNEAMENTE.

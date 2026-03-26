@@ -2,6 +2,7 @@ package com.virtualthread.log_ingestion_engine.core.service.consumer;
 
 import com.virtualthread.log_ingestion_engine.core.dto.LogEntry;
 import com.virtualthread.log_ingestion_engine.core.repository.LogBuffer;
+import com.virtualthread.log_ingestion_engine.core.service.IngestionStateService;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,6 +15,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class LogConsumer implements DisposableBean {
+    private final IngestionStateService stateService;
     private final LogBuffer logBuffer;
     private static final int BATCH_SIZE = 100;
     private volatile boolean running = true; // Flag para control de apagado
@@ -70,11 +72,11 @@ public class LogConsumer implements DisposableBean {
                 .count();
         log.info("💾 [BATCH] Procesados {} logs. (Virtual: {} | Platform: {}). Pendientes: {}",
                 logs.size(), virtualCount, platformCount, logBuffer.getPendingCount());
-        // Si después de procesar este lote la cola quedó en 0, terminó la ráfaga
+        // Si después de procesar este lote la cola quedó en 0, terminó el proceso
         if (logBuffer.getPendingCount() == 0) {
             long endTime = System.currentTimeMillis();
             long duration = endTime - startTime;
-
+            stateService.finish();
             log.info("🏁 [LATENCY REPORT] Ingesta Completa de {} logs finalizada en {} ms.",
                     totalProcessedInSession, duration);
 

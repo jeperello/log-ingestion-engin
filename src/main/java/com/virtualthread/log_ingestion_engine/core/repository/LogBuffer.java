@@ -13,7 +13,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 @Slf4j
 public class LogBuffer {
     // Capacidad limitada para demostrar Backpressure (Presión hacia atrás)
-    private int capacity = 3000;
+    private final int capacity = 3000;
     // Si la cola se llena, el productor tiene que esperar.
     private final BlockingQueue<LogEntry> queue = new LinkedBlockingQueue<>(capacity);
 
