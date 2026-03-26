@@ -12,10 +12,10 @@ import java.util.concurrent.atomic.AtomicBoolean;
 @Component
 @Slf4j
 public class LogBuffer {
-
     // Capacidad limitada para demostrar Backpressure (Presión hacia atrás)
+    private int capacity = 3000;
     // Si la cola se llena, el productor tiene que esperar.
-    private final BlockingQueue<LogEntry> queue = new LinkedBlockingQueue<>(3000);
+    private final BlockingQueue<LogEntry> queue = new LinkedBlockingQueue<>(capacity);
 
     // Estado atómico para evitar la repetición del log en múltiples hilos
     private final AtomicBoolean backpressureLogged = new AtomicBoolean(false);
@@ -29,7 +29,7 @@ public class LogBuffer {
             // compareAndSet intenta cambiar de false a true.
             // Solo el PRIMER hilo que lo logre entrará al if.
             if (backpressureLogged.compareAndSet(false, true)) {
-                log.warn("⚠️ [BACKPRESSURE] La cola llegó a su límite (5000). Hilos en espera...");
+                log.warn("⚠️ [BACKPRESSURE] La cola llegó a su límite ("+capacity+"). Hilos en espera...");
             }
         }
         queue.put(entry);

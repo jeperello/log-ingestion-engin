@@ -4,6 +4,7 @@ import com.virtualthread.log_ingestion_engine.core.repository.LogBuffer;
 import com.virtualthread.log_ingestion_engine.core.dto.request.IngestionRequest;
 import com.virtualthread.log_ingestion_engine.core.factory.LogProducerFactory;
 import com.virtualthread.log_ingestion_engine.core.service.producer.LogProducerI;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +21,7 @@ public class LogController {
     private final LogBuffer buffer;
 
     @PostMapping("/ingest")
-    public ResponseEntity<Map<String,String>> ingest(@RequestBody IngestionRequest request) {
+    public ResponseEntity<Map<String,String>> ingest(@Valid @RequestBody IngestionRequest request) {
         LogProducerI producer = factory.getProducer(request.engineType());
         // Lanzamos un Hilo Virtual "Orquestador" que se encarga de disparar la producción.
         // Esto libera al hilo de la petición HTTP INSTANTÁNEAMENTE.
